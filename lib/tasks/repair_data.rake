@@ -42,7 +42,7 @@ namespace :decidim do
       if Decidim.enable_machine_translations
         logger.info("Checking all translatable resources...")
 
-        updated_resources_ids = Decidim::RepairTranslationsService.run(logger: logger)
+        updated_resources_ids = Decidim::RepairTranslationsService.run(logger:)
 
         if updated_resources_ids.blank?
           logger.info("No resources updated")
