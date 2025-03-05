@@ -73,8 +73,8 @@ namespace :decidim_app do
     desc "Create install or reload install with path='path/to/external_install_configuration.yml'"
     task external_install_or_reload: :environment do
       raise "You must specify a path to an external install configuration, path='path/to/external_install_configuration.yml'" if ENV["path"].blank? || !File.exist?(ENV.fetch(
-        "path", nil
-      ))
+                                                                                                                                                                      "path", nil
+                                                                                                                                                                    ))
 
       DecidimApp::K8s::Manager.run(ENV.fetch("path", nil))
     end
@@ -98,14 +98,16 @@ namespace :decidim_app do
 
       organization = budget.organization
 
-      users_ids = Decidim::Budgets::Order.where(budget: budget)
+      users_ids = Decidim::Budgets::Order.where(budget:)
                                          .pending
-                    &.pluck(:decidim_user_id)
+                                         &.pluck(:decidim_user_id)
       if users_ids.empty?
         p "no pending votes"
         next
       end
+      # rubocop:disable Rails/WhereNotWithMultipleConditions
       users = Decidim::User.where(id: users_ids).where.not(phone_number: nil, phone_country: nil)
+      # rubocop:enable Rails/WhereNotWithMultipleConditions
 
       if users.blank?
         p "no pending votes from users with phone number"
@@ -132,12 +134,12 @@ namespace :decidim_app do
 
       url = URI(api_url)
       request = Net::HTTP::Post::Multipart.new(url, {
-        u: username,
-        p: password,
-        f: "sms",
-        c: "Reminder",
-        file: UploadIO.new(file, "text/csv", filename)
-      })
+                                                 u: username,
+                                                 p: password,
+                                                 f: "sms",
+                                                 c: "Reminder",
+                                                 file: UploadIO.new(file, "text/csv", filename)
+                                               })
 
       response = Net::HTTP.start(url.hostname, url.port, use_ssl: true) do |https| # pay attention to use_ssl if you need it
         https.request(request)

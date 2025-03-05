@@ -105,7 +105,7 @@ module DecidimApp
 
       def env_vars
         @env_vars ||= Dotenv.parse(".env")
-                            .reject { |key, _value| FORBIDDEN_ENVIRONMENT_KEYS.include?(key) }
+                            .except(*FORBIDDEN_ENVIRONMENT_KEYS)
                             .merge(DEFAULT_ENVIRONMENT_VARIABLES)
                             .transform_values(&:to_s)
       end
