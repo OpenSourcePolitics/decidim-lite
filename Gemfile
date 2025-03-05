@@ -29,6 +29,7 @@ gem "aws-sdk-s3"
 gem "dalli"
 gem "dotenv-rails", "~> 2.7"
 gem "letter_opener_web", "~> 2.0"
+gem "multipart-post"
 gem "spring"
 
 group :development, :test do
