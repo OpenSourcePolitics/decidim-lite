@@ -3,6 +3,12 @@
 require "sidekiq/web"
 require "sidekiq-scheduler/web"
 
+Decidim::Core::Engine.routes.draw do
+  scope "/profiles/:nickname", format: false, constraints: { nickname: %r{[^/]+} } do
+    get "proposals", to: "profiles#proposals", as: "profile_proposals"
+  end
+end
+
 Rails.application.routes.draw do
   if Rails.application.secrets.puma[:health_check][:enabled]
     get "/stats", to: redirect { |_params, request| "http://#{request.host}:#{Rails.application.secrets.puma[:health_check][:port]}/stats?#{request.params.to_query}" }
@@ -16,13 +22,10 @@ Rails.application.routes.draw do
     get "/admin_sign_in", to: "decidim/devise/sessions#new"
   end
 
-  scope "/profiles/:nickname", format: false, constraints: { nickname: %r{[^/]+} } do
-    get "proposals", to: "decidim/profiles#proposals", as: "profile_proposals"
-  end
-
   get "/sign_in_redirect/:provider", to: "decidim/omniauth/switch#redirect"
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development? || ENV.fetch("ENABLE_LETTER_OPENER", "0") == "1"
 
   mount Decidim::Core::Engine => "/"
 end
+
