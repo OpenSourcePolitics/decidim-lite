@@ -104,6 +104,7 @@ module Decidim
 
     def group_tabs
       items = [:members].tap do |keys|
+        # keys.append(:badges, :followers, :proposals, :activity)
         keys.append(:badges, :followers, :proposals)
         keys << :conversations if manageable_group?
       end

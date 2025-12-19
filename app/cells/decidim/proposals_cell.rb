@@ -5,9 +5,13 @@ module Decidim
     include Decidim::CellsPaginateHelper
     include Decidim::Core::Engine.routes.url_helpers
     include Decidim::CardHelper
+    include Decidim::Proposals::ProposalsHelper
     # include Decidim::Coauthorable
 
+    # see https://github.com/decidim/decidim/blob/release/0.29-stable/decidim-proposals/app/controllers/decidim/proposals/proposals_controller.rb
     def show
+      proposals
+      @view_mode = "list"
       render :show
     end
 
