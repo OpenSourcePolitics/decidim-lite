@@ -21,8 +21,8 @@ module DecidimLite
     config.load_defaults 6.1
 
     # Empêche Zeitwerk d'autoload le dossier decorators
-    config.autoload_paths -= Dir[Rails.root.join("app/decorators")]
-    config.eager_load_paths -= Dir[Rails.root.join("app/decorators")]
+    config.autoload_paths -= Rails.root.glob("app/decorators")
+    config.eager_load_paths -= Rails.root.glob("app/decorators")
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -42,10 +42,9 @@ module DecidimLite
     config.after_initialize do
       decorators_path = Rails.root.join("app/decorators/**/*.rb")
       Dir[decorators_path].each do |decorator|
-        puts "💡 Chargement manuel du décorateur : #{File.basename(decorator)}"
+        Rails.logger.info "💡 Chargement manuel du décorateur : #{File.basename(decorator)}"
         require decorator
       end
     end
-
   end
 end
