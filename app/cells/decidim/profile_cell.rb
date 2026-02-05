@@ -19,7 +19,7 @@ module Decidim
       groups: { icon: "team-line", path: :profile_groups_path },
       members: { icon: "contacts-line", path: :profile_members_path },
       conversations: { icon: "question-answer-line", path: :profile_conversations_path },
-      proposals: { icon: "group-line", path: :profile_proposals_path }
+      proposals: { icon: "eye-2-line", path: :profile_proposals_path }
     }.freeze
 
     def show
