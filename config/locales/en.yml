@@ -5,6 +5,9 @@ en:
         assembly:
           fields:
             promoted: "Promoted"
+    profiles:
+      show:
+        proposals: "Proposals"
   layouts:
     decidim:
       data_consent:

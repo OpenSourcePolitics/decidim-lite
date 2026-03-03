@@ -3,6 +3,12 @@
 require "sidekiq/web"
 require "sidekiq-scheduler/web"
 
+Decidim::Core::Engine.routes.draw do
+  scope "/profiles/:nickname", format: false, constraints: { nickname: %r{[^/]+} } do
+    get "proposals", to: "profiles#proposals", as: "profile_proposals"
+  end
+end
+
 Rails.application.routes.draw do
   if Rails.application.secrets.puma[:health_check][:enabled]
     get "/stats", to: redirect { |_params, request| "http://#{request.host}:#{Rails.application.secrets.puma[:health_check][:port]}/stats?#{request.params.to_query}" }
@@ -22,3 +28,4 @@ Rails.application.routes.draw do
 
   mount Decidim::Core::Engine => "/"
 end
+

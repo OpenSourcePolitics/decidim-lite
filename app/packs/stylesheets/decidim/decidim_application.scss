@@ -37,3 +37,12 @@ header {
   }
 }
 
+/* BEGIN Group Profile Proposals List */
+
+.profile__scaffold__bottom-content {
+  .card__list-list, .card__grid-grid {
+    @apply my-8;
+  }
+}
+
+/* END Group Profile Proposals List */
